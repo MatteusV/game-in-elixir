@@ -10,7 +10,6 @@ defmodule Games.RockPaperScissors do
     end
   end
 
-
   defp generate_ia_choice do
     Enum.random(["rock", "paper", "scissors"])
   end
