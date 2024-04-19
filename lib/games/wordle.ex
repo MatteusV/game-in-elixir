@@ -5,7 +5,7 @@ defmodule Games.Wordle do
     correct_word = Enum.random(["elixir", "erlang"])
     correct_word_list = split_string(correct_word)
 
-    {yellow, green} = compare_string(user_input_list, correct_word_list)
+    {yellow, green} = compar_string(user_input_list, correct_word_list)
 
     if(green == 6) do
       IO.puts("You win!")
@@ -29,7 +29,7 @@ defmodule Games.Wordle do
     string_list
   end
 
-  defp compare_string(user_input_list, correct_word_list) do
+  defp compar_string(user_input_list, correct_word_list) do
     {yellow, green} =
       Enum.with_index(user_input_list)
       |> Enum.reduce({0, 0}, fn {element, index}, {yellow_count, green_count} ->
