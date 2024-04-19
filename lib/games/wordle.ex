@@ -10,12 +10,12 @@ defmodule Games.Wordle do
     if(green == 6) do
       IO.puts("You win!")
     else
-      IO.puts(
-        "letters in the correct position:: #{green} | letters in the wrong position: #{yellow}"
-      )
       if(count >= 4) do
         IO.puts("You lost!")
       else
+        IO.puts(
+          "letters in the correct position:: #{green} | letters in the wrong position: #{yellow}"
+        )
         play(count + 1)
       end
     end
