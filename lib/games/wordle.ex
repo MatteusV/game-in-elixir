@@ -1,4 +1,9 @@
 defmodule Games.Wordle do
+  @moduledoc """
+    para de dar error!
+  """
+
+  @spec play(integer()) :: atom() | :error
   def play(count \\ 0) do
     user_input_list =
       "Guess the word: "
@@ -26,6 +31,7 @@ defmodule Games.Wordle do
     end
   end
 
+  @spec split(String.t()) :: [String.t()]
   defp split(string) do
     string_list = String.split(string, "")
 
@@ -34,12 +40,15 @@ defmodule Games.Wordle do
     |> List.delete_at(0)
   end
 
+  @spec check_guess([String.t()], [String.t()]) :: {integer(), integer()}
   defp check_guess(user_input_list, correct_word_list) do
     user_input_list
     |> Enum.with_index()
     |> Enum.reduce({0, 0}, &reducer(&1, &2, correct_word_list))
   end
 
+  @spec reducer({String.t(), integer()}, {integer(), integer()}, [String.t()]) ::
+          {integer(), integer()}
   defp reducer({element, index}, {yellow_count, green_count}, correct_word_list) do
     cond do
       element == Enum.at(correct_word_list, index) -> {yellow_count, green_count + 1}
