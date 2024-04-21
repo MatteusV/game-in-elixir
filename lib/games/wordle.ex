@@ -1,51 +1,50 @@
 defmodule Games.Wordle do
   def play(count \\ 0) do
-    user_input = "Guess the word: " |> IO.gets() |> String.trim("\n")
-    user_input_list = split_string(user_input)
+    user_input_list =
+      "Guess the word: "
+      |> IO.gets()
+      |> String.trim("\n")
+      |> split()
+
     correct_word = Enum.random(["elixir", "erlang"])
-    correct_word_list = split_string(correct_word)
+    correct_word_length = String.length(correct_word)
+    correct_word_list = split(correct_word)
 
-    {yellow, green} = compar_string(user_input_list, correct_word_list)
+    case check_guess(user_input_list, correct_word_list) do
+      {^correct_word_length, _yellow} ->
+        IO.puts("You win!")
 
-    if(green == 6) do
-      IO.puts("You win!")
-    else
-      if(count >= 4) do
+      {_green, 4} ->
         IO.puts("You lost!")
-      else
-        IO.puts(
-          "letters in the correct position:: #{green} | letters in the wrong position: #{yellow}"
-        )
+
+      {green, yellow} ->
+        green_message = "letters in the correct position:: #{green}"
+        yellow_message = "letters in the wrong position: #{yellow}"
+        IO.puts("#{green_message} | #{yellow_message}")
+
         play(count + 1)
-      end
     end
   end
 
-  defp split_string(string) do
-    string_list = string |> String.split("")
-    string_length = string_list |> length()
-    string_list = List.delete_at(string_list, string_length - 1)
-    string_list = List.delete_at(string_list, 0)
+  defp split(string) do
+    string_list = String.split(string, "")
+
     string_list
+    |> List.delete_at(length(string_list) - 1)
+    |> List.delete_at(0)
   end
 
-  defp compar_string(user_input_list, correct_word_list) do
-    {yellow, green} =
-      Enum.with_index(user_input_list)
-      |> Enum.reduce({0, 0}, fn {element, index}, {yellow_count, green_count} ->
-        correct_element = Enum.at(correct_word_list, index)
+  defp check_guess(user_input_list, correct_word_list) do
+    user_input_list
+    |> Enum.with_index()
+    |> Enum.reduce({0, 0}, &reducer(&1, &2, correct_word_list))
+  end
 
-        if element == correct_element do
-          {yellow_count, green_count + 1}
-        else
-          if Enum.member?(correct_word_list, element) do
-            {yellow_count + 1, green_count}
-          else
-            {yellow_count, green_count}
-          end
-        end
-      end)
-
-    {yellow, green}
+  defp reducer({element, index}, {yellow_count, green_count}, correct_word_list) do
+    cond do
+      element == Enum.at(correct_word_list, index) -> {yellow_count, green_count + 1}
+      Enum.member?(correct_word_list, element) -> {yellow_count + 1, green_count}
+      true -> {yellow_count, green_count}
+    end
   end
 end
