@@ -16,13 +16,13 @@ defmodule Games.Wordle do
     correct_word_list = split(correct_word)
 
     case check_guess(user_input_list, correct_word_list) do
-      {^correct_word_length, _yellow} ->
+      {_yellow, ^correct_word_length} ->
         IO.puts("You win!")
 
-      {_green, 4} ->
+      {4, _green} ->
         IO.puts("You lost!")
 
-      {green, yellow} ->
+      {yellow, green} ->
         green_message = "letters in the correct position:: #{green}"
         yellow_message = "letters in the wrong position: #{yellow}"
         IO.puts("#{green_message} | #{yellow_message}")
