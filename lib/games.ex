@@ -12,7 +12,7 @@ defmodule Games do
       :world
 
   """
-  def hello do
-    :world
+  def main(_args) do
+    Games.GameSelector.start()
   end
 end

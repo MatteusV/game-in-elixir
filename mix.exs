@@ -1,4 +1,7 @@
 defmodule Games.MixProject do
+  @moduledoc """
+    pra n da aviso
+  """
   use Mix.Project
 
   def project do
@@ -7,7 +10,8 @@ defmodule Games.MixProject do
       version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      escript: [main_module: Games]
     ]
   end
 
